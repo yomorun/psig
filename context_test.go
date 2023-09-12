@@ -12,9 +12,9 @@ import (
 
 func TestContext(t *testing.T) {
 	t.Run("new context error", func(t *testing.T) {
-		yctx := mockYomoCtx{read: []byte{0x21}}
+		yctx := mockYomoCtx{read: []byte("bytes that cannot be unmarshalled")}
 		_, err := NewContext(&yctx, "test")
-		assert.EqualError(t, err, "msgpack: unexpected code=21 decoding map length")
+		assert.EqualError(t, err, "msgpack: unexpected code=62 decoding map length")
 	})
 
 	t.Run("new context", func(t *testing.T) {
