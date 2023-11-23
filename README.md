@@ -11,13 +11,13 @@ Developers can interact with Presencejs in YoMo serverless functions.
 yomo init presence-backend-sfn
 ```
 
-1. Add the `psig` golang package
+2. Add the `psig` golang package
 
 ```sh
 go get github.com/yomorun/psig
 ```
 
-1. Import `psig` in your YoMo Stateful Serverless function:
+3. Import `psig` in your YoMo Stateful Serverless function:
 
 ```go
 func Handler(ctx serverless.Context) {
