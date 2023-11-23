@@ -54,9 +54,54 @@ func Handler(ctx serverless.Context) {
 
 ### NewContext
 
-Returns context for prscd from [serverless.Context](https://yomo.run/docs/api/sfn#sfnsethandlerfn-asynchandler-error). The Context can be used to load events and write events.
+Returns `PrscdContext` for prscd from [serverless.Context](https://yomo.run/docs/api/sfn#sfnsethandlerfn-asynchandler-error). This Context can be used to load events and write events.
 
 ### PrscdContext
+
+`PrscdContext` is the context for Presencejs. Developers can read events from yomo context and write events to it.
+
+Methods:
+
+- `ReadEvent() (*ChannelEvent, error)`: Read event from Presencejs.
+- `WriteEvent(event *ChannelEvent) error`: Write event to Presencejs.
+- `ReadSignalling() *Signalling`: Read signalling from Presencejs.
+
+### Signalling
+
+`Signalling` is the data structure of Presencejs.
+
+```go
+type Signalling struct {
+	Type    string `msgpack:"t"`              // Type describes the type of signalling, `Data Signal` or `Control Signal`
+	OpCode  string `msgpack:"op,omitempty"`   // OpCode describes the operation type of signalling
+	Channel string `msgpack:"c"`              // Channel describes the channel
+	Sid     string `msgpack:"sid,omitempty"`  // Sid describes the peer id on this node in backend
+	Payload []byte `msgpack:"pl,omitempty"`   // Payload describes the payload data of signalling
+	Cid     string `msgpack:"p"`              // Cid describes the client id of peer, set by developer
+	AppID   string `msgpack:"app,omitempty"`  // AppID describes the app_id
+	MeshID  string `msgpack:"mesh,omitempty"` // MeshID describes the mesh_id of this node
+}
+```
+
+### ChannelEvent
+
+`ChannelEvent` describes the event data structure of Presencejs. It contains the event type and data. It's used in `channel.broadcast()` and `channel.subscribe()` in Presencejs.
+
+Properties:
+
+```go
+type ChannelEvent struct {
+	Event string `msgpack:"event"`
+	Data  string `msgpack:"data"`
+}
+```
+
+### Constants
+
+- `OpChannelJoin`: when a peer joins the channel, client will sends this event to prscd server, ask for joining the channel.
+- `OpPeerOffline`: when a peer leaves the channel, this event will be sent to all peers in the channel.
+- `OpPeerOnline`: when a peer joins the channel, this event will be sent to all peers in the channel.
+- `OpState`: when a peer syncs state changes, this event will be sent to all peers in the channel.
 
 ## License
 
