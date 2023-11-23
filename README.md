@@ -21,26 +21,26 @@ go get github.com/yomorun/psig
 
 ```go
 func Handler(ctx serverless.Context) {
-  // Create presencejs context
+	// Create presencejs context
 	pCtx, err := psig.NewContext(ctx, sfnName)
 	if err != nil {
 		fmt.Println("psig.NewContext:", err)
 		return
 	}
 
-  // Handle presencejs events
+	// Handle presencejs events
 	sig := pCtx.ReadSignalling()
 
-  // sig.Type describe the type of the event, it can be: `Data` or `Control`
+	// sig.Type describe the type of the event, it can be: `Data` or `Control`
 	if sig.Type != psig.SigData {
 		return
 	}
 
-  // the channel of Presencejs
+	// the channel of Presencejs
 	fmt.Println("presencejs: channel: %v, data, %v", sig.Channel, sig.Payload)
 
 
-  // Write event to Presencejs, this message will be broadcast to all clients in the channel
+	// Write event to Presencejs, this message will be broadcast to all clients in the channel
 	resp, _ := json.Marshal()
 
 	pCtx.WriteEvent(&psig.ChannelEvent{
