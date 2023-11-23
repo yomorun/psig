@@ -41,7 +41,7 @@ func Handler(ctx serverless.Context) {
 
 
 	// Write event to Presencejs, this message will be broadcast to all clients in the channel
-	resp, _ := json.Marshal()
+	resp, _ := json.Marshal(myResponseObject)
 
 	pCtx.WriteEvent(&psig.ChannelEvent{
 		Event: EVENT_COMPLETED,
